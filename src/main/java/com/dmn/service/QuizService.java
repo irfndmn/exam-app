@@ -1,30 +1,29 @@
 package com.dmn.service;
-
-import com.dmn.dto.QuestionResponse;
+import com.dmn.dto.response.QuestionResponse;
 import com.dmn.entity.Answer;
 import com.dmn.entity.Question;
 import com.dmn.entity.Quiz;
 import com.dmn.exception.ResourceNotFoundException;
 import com.dmn.repository.QuestionDao;
 import com.dmn.repository.QuizDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class QuizService {
 
-    @Autowired
-    QuizDao quizDao;
 
-    @Autowired
-    QuestionDao questionDao;
+   private final QuizDao quizDao;
+
+
+   private final QuestionDao questionDao;
 
 
     public ResponseEntity<String> createQuiz(String category, Integer numOfQuestion, String title) {
@@ -64,14 +63,16 @@ public class QuizService {
             }
             i++;
         }
-        Integer point=calculatePoints(correctAnswer,wrongAnswer);
+        Integer point=calculatePoints(correctAnswer,wrongAnswer,quiz);
 
         Map<String,Integer> theExamResult=new HashMap<>();
 
+        int emptyQ=(quiz.getQuestions().size()-(correctAnswer+wrongAnswer));
 
         theExamResult.put("Num Of Total Question: ",quiz.getQuestions().size());
         theExamResult.put("Your Correct Answer  : ",correctAnswer);
         theExamResult.put("Your  Wrong  Answer  : ",wrongAnswer);
+        theExamResult.put("Your  Empty  Answer  : ",emptyQ);
         theExamResult.put("Your   Exam   Point  : ",point);
 
         return new ResponseEntity<>(theExamResult,HttpStatus.OK);
@@ -82,12 +83,20 @@ public class QuizService {
 
 
 
-    private Integer calculatePoints(Integer correctAnswer, Integer wrongAnswer){
+    private Integer calculatePoints(Integer correctAnswer, Integer wrongAnswer, Quiz quiz){
 
-        double questionPoint=100.0/(correctAnswer+wrongAnswer);
+        double questionPoint=100.0/quiz.getQuestions().size();
         return (int) (questionPoint*correctAnswer);
 
     }
 
 
+//    public ResponseEntity<Page<QuestionResponse>> getQuizQByIdPageToPage(Integer id, int page, int size, String sortedBy, Sort.Direction direction) {
+//
+//        Pageable pageable= PageRequest.of(page,size,Sort.by(direction,sortedBy));
+//
+//      Quiz quiz=quizDao.fi
+//
+//
+//    }
 }

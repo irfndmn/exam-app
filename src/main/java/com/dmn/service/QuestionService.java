@@ -2,6 +2,7 @@ package com.dmn.service;
 
 import com.dmn.entity.Question;
 import com.dmn.repository.QuestionDao;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class QuestionService {
 
-    @Autowired
-    QuestionDao questionDao;
+
+   private final QuestionDao questionDao;
 
 
 

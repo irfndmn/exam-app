@@ -1,4 +1,4 @@
-package com.dmn.dto;
+package com.dmn.dto.response;
 
 import com.dmn.entity.Question;
 import lombok.AllArgsConstructor;

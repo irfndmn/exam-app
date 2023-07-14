@@ -31,11 +31,4 @@ public class Question {
 
     private String category;
 
-
-
-
-
-
-
-
 }
