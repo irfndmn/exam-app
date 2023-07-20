@@ -23,7 +23,6 @@ public class QuizController {
                                               @RequestParam("numOfQuestion")Integer numOfQuestion,
                                               @RequestParam("title") String title){
         return quizService.createQuiz(category,numOfQuestion,title);
-
     }
 
 
